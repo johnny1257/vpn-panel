@@ -3,9 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <title>پنل کانفیگ VPN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .configs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .box h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #007BFF;
+    }
+    .box p {
+      font-size: 14px;
+      word-wrap: break-word;
+    }
+    .qr {
+      margin-top: 10px;
+      text-align: center;
+    }
+    img.flag {
+      width: 24px;
+      height: 16px;
+      margin-right: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>سلام! این اولین سایت من روی github.io هست 🚀</h1>
-  <p>اینجا میشه کانفیگ‌ها یا هر چیزی گذاشت.</p>
+  <h1>🌐 VPN Config Panel</h1>
+  <p>لیست کانفیگ‌ها بر اساس پروتکل</p>
+  
+  <div id="configs" class="configs"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script>
+    const sources = {
+      "All": "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/all.txt",
+      "VLESS": "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vless.txt",
+      "VMESS": "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vmess.txt",
+      "Shadowsocks": "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/shadowsocks.txt"
+    };
+
+    const configsDiv = document.getElementById("configs");
+
+    async function fetchConfigs() {
+      for (const [proto, url] of Object.entries(sources)) {
+        const res = await fetch(url);
+        const text = await res.text();
+        const lines = text.split("\n").filter(x => x.trim());
+
+        lines.forEach(cfg => {
+          const box = document.createElement("div");
+          box.className = "box";
+
+          // پرچم کشور بر اساس کلمه توی کانفیگ (خیلی ساده)
+          let flag = "";
+          if (cfg.toLowerCase().includes("us")) flag = "🇺🇸";
+          else if (cfg.toLowerCase().includes("de")) flag = "🇩🇪";
+          else if (cfg.toLowerCase().includes("ir")) flag = "🇮🇷";
+          else flag = "🏳️";
+
+          box.innerHTML = `<h3>${flag} ${proto}</h3><p>${cfg}</p>`;
+
+          // QR Code
+          const qr = document.createElement("canvas");
+          qr.className = "qr";
+          new QRious({
+            element: qr,
+            value: cfg,
+            size: 150
+          });
+          box.appendChild(qr);
+
+          configsDiv.appendChild(box);
+        });
+      }
+    }
+
+    fetchConfigs();
+  </script>
 </body>
 </html>
