@@ -204,10 +204,12 @@
         </div>
         <div class="controls">
             <div class="filters" role="tablist" aria-label="filters">
-                <button class="btn primary" data-proto="all">همه</button>
-                <button class="btn" data-proto="vless">VLESS</button>
-                <button class="btn" data-proto="vmess">VMESS</button>
-                <button class="btn" data-proto="ss">Shadowsocks</button>
+                <button class="btn primary" data-filter="all">همه</button>
+                <button class="btn" data-filter="vless">VLESS</button>
+                <button class="btn" data-filter="vmess">VMESS</button>
+                <button class="btn" data-filter="ss">Shadowsocks</button>
+                <div style="width:8px"></div>
+                <button class="btn accent" data-filter="active">فقط فعال‌ها</button>
             </div>
             <div style="width:8px"></div>
             <button class="btn accent" id="btn-test-all">🔎 تست همه پینگ‌ها</button>
@@ -443,19 +445,25 @@
                 }
             };
 
-            const buildDisplay = (proto = 'all', limit = SHOW_LIMIT) => {
-                let source = (proto === 'all') ? DATA.all : DATA[proto] || [];
-                DISPLAY_LIST = source.map(raw => {
-                    const hp = extractHostPort(raw);
-                    return {
-                        proto,
-                        raw,
-                        host: hp ? hp.host : null,
-                        port: hp ? hp.port : null,
-                        lastPing: null
-                    };
-                });
-                const slice = DISPLAY_LIST.slice(0, Math.min(limit, MAX_SHOW));
+            const buildDisplay = (filterType = 'all') => {
+                let source = [];
+                if (filterType === 'active') {
+                    source = DISPLAY_LIST.filter(item => item.lastPing !== null && item.lastPing < 4000);
+                } else {
+                    const proto = filterType === 'all' ? 'all' : filterType;
+                    source = (proto === 'all') ? DATA.all : DATA[proto] || [];
+                    DISPLAY_LIST = source.map(raw => {
+                        const hp = extractHostPort(raw);
+                        return {
+                            proto,
+                            raw,
+                            host: hp ? hp.host : null,
+                            port: hp ? hp.port : null,
+                            lastPing: null
+                        };
+                    });
+                }
+                const slice = source.slice(0, Math.min(SHOW_LIMIT, MAX_SHOW));
                 const html = slice.map((it, idx) => makeCard(it, idx)).join('');
                 document.getElementById('grid').innerHTML = html;
             };
@@ -465,8 +473,8 @@
                     b.addEventListener('click', (e) => {
                         document.querySelectorAll('.filters .btn').forEach(x => x.classList.remove('primary'));
                         e.currentTarget.classList.add('primary');
-                        const proto = e.currentTarget.getAttribute('data-proto');
-                        buildDisplay(proto);
+                        const filter = e.currentTarget.getAttribute('data-filter');
+                        buildDisplay(filter);
                     });
                 });
 
@@ -482,14 +490,14 @@
                 document.getElementById('loadMore').addEventListener('click', () => {
                     SHOW_LIMIT = Math.min(SHOW_LIMIT + 60, MAX_SHOW);
                     const sel = document.querySelector('.filters .btn.primary');
-                    const proto = sel ? sel.getAttribute('data-proto') : 'all';
-                    buildDisplay(proto);
+                    const filter = sel ? sel.getAttribute('data-filter') : 'all';
+                    buildDisplay(filter);
                 });
             };
 
             const init = async () => {
                 await loadAllSources();
-                document.querySelector('.filters .btn[data-proto="all"]').classList.add('primary');
+                document.querySelector('.filters .btn[data-filter="all"]').classList.add('primary');
                 buildDisplay('all', SHOW_LIMIT);
                 initEventListeners();
             };
