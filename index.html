@@ -1,353 +1,507 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>پنل کانفیگ VPN — Dark</title>
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0b0f12; --card:#0f1720; --muted:#9aa4ad; --accent:#2ea043; --accent2:#58a6ff;
-    --danger:#ff6b6b; --glass:rgba(255,255,255,0.03);
-  }
-  html,body{height:100%;margin:0;font-family:'Vazirmatn',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
-  body{background:linear-gradient(180deg,#050608 0%, #081018 100%);color:#e6eef6;padding:18px;}
-  header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
-  h1{margin:0;font-size:1.25rem;color:var(--accent2)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .btn{background:var(--glass);border:1px solid rgba(255,255,255,0.03);color:#e6eef6;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;}
-  .btn.primary{background:linear-gradient(90deg,#03dac6,#02b089);color:#071217;border:none}
-  .btn.accent{background:linear-gradient(90deg,var(--accent2),#9f6cff);color:#071217;border:none}
-  .btn.warn{background:linear-gradient(90deg,#ffb86b,#ff7b45);color:#071217;border:none}
-  .btn:active{transform:translateY(1px)}
-  .filters{display:flex;gap:8px}
-  .filters .btn{min-width:80px;text-align:center}
-  .info{color:var(--muted);font-size:0.92rem;margin-top:6px}
-  main{margin-top:12px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;min-height:220px}
-  .card .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .protocol{font-weight:700;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);font-size:0.9rem}
-  .flag{width:30px;height:20px;border-radius:3px;object-fit:cover;border:1px solid rgba(0,0,0,0.25)}
-  .host{font-size:0.95rem;color:#e6eef6;word-break:break-all}
-  .qr-wrap{text-align:center;margin-top:6px}
-  .qr-img{width:160px;height:160px;border-radius:8px;background:#fff;display:inline-block;padding:6px}
-  .actions-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-  .small{font-size:0.85rem;color:var(--muted)}
-  .ping{font-weight:700;padding:6px 8px;border-radius:8px}
-  .ping.green{background:rgba(46,160,67,0.12);color:var(--accent)}
-  .ping.yellow{background:rgba(255,184,77,0.08);color:#ffb84d}
-  .ping.red{background:rgba(255,87,87,0.08);color:var(--danger)}
-  .copy-btn{background:transparent;border:1px dashed rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
-  .highlight{box-shadow:0 8px 30px rgba(46,160,67,0.12);border:2px solid rgba(46,160,67,0.18)}
-  footer{margin-top:18px;color:var(--muted);font-size:0.9rem;text-align:center}
-  @media (max-width:640px){ .qr-img{width:120px;height:120px} .card{min-height:200px} }
-</style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>پنل کانفیگ VPN — Dark</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f12;
+            --card: #0f1720;
+            --muted: #9aa4ad;
+            --accent: #2ea043;
+            --accent2: #58a6ff;
+            --danger: #ff6b6b;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Vazirmatn', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+        }
+        body {
+            background: linear-gradient(180deg, #050608 0%, #081018 100%);
+            color: #e6eef6;
+            padding: 18px;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--accent2)
+        }
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+        .btn {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            color: #e6eef6;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn.primary {
+            background: linear-gradient(90deg, #03dac6, #02b089);
+            color: #071217;
+            border: none
+        }
+        .btn.accent {
+            background: linear-gradient(90deg, var(--accent2), #9f6cff);
+            color: #071217;
+            border: none
+        }
+        .btn.warn {
+            background: linear-gradient(90deg, #ffb86b, #ff7b45);
+            color: #071217;
+            border: none
+        }
+        .btn:active {
+            transform: translateY(1px)
+        }
+        .filters {
+            display: flex;
+            gap: 8px
+        }
+        .filters .btn {
+            min-width: 80px;
+            text-align: center
+        }
+        .info {
+            color: var(--muted);
+            font-size: 0.92rem;
+            margin-top: 6px
+        }
+        main {
+            margin-top: 12px
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px
+        }
+        .card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 220px
+        }
+        .card .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px
+        }
+        .protocol {
+            font-weight: 700;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.9rem
+        }
+        .flag {
+            width: 30px;
+            height: 20px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 0, 0, 0.25)
+        }
+        .host {
+            font-size: 0.95rem;
+            color: #e6eef6;
+            word-break: break-all
+        }
+        .qr-wrap {
+            text-align: center;
+            margin-top: 6px
+        }
+        .qr-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 8px;
+            background: #fff;
+            display: inline-block;
+            padding: 6px
+        }
+        .actions-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+        .small {
+            font-size: 0.85rem;
+            color: var(--muted)
+        }
+        .ping {
+            font-weight: 700;
+            padding: 6px 8px;
+            border-radius: 8px
+        }
+        .ping.green {
+            background: rgba(46, 160, 67, 0.12);
+            color: var(--accent)
+        }
+        .ping.yellow {
+            background: rgba(255, 184, 77, 0.08);
+            color: #ffb84d
+        }
+        .ping.red {
+            background: rgba(255, 87, 87, 0.08);
+            color: var(--danger)
+        }
+        .copy-btn {
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.04);
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer
+        }
+        .highlight {
+            box-shadow: 0 8px 30px rgba(46, 160, 67, 0.12);
+            border: 2px solid rgba(46, 160, 67, 0.18)
+        }
+        footer {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            text-align: center
+        }
+        @media (max-width:640px) {
+            .qr-img {
+                width: 120px;
+                height: 120px
+            }
+            .card {
+                min-height: 200px
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-  <div>
-    <h1>پنل کانفیگ VPN — Dark</h1>
-    <div class="info">کانفیگ‌ها از GitHub بارگذاری می‌شوند — پروتکل را انتخاب کنید، سپس پینگ‌ها را تست کنید.</div>
-  </div>
-  <div class="controls">
-    <div class="filters" role="tablist" aria-label="filters">
-      <button class="btn primary" data-proto="all">همه</button>
-      <button class="btn" data-proto="vless">VLESS</button>
-      <button class="btn" data-proto="vmess">VMESS</button>
-      <button class="btn" data-proto="ss">Shadowsocks</button>
-    </div>
-    <div style="width:8px"></div>
-    <button class="btn accent" id="btn-test-all">🔎 تست همه پینگ‌ها</button>
-    <button class="btn warn" id="btn-fastest">⚡ سریع‌ترین</button>
-  </div>
-</header>
-
-<main>
-  <div id="grid" class="grid"></div>
-  <div style="text-align:center;margin-top:12px">
-    <button id="loadMore" class="btn">بارگذاری بیشتر</button>
-  </div>
-</main>
-
-<footer>لینک‌های کانفیگ از مخزن ShatakVPN/ConfigForge — نمایش حداکثر 200 آیتم در هر بار</footer>
-
-<script>
-/* ====== تنظیم منابع (raw GitHub links) ====== */
-const SOURCES = {
-  all: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/all.txt",
-  vless: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vless.txt",
-  vmess: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vmess.txt",
-  ss: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/shadowsocks.txt"
-};
-
-/* ====== نگهداری داده‌ها ====== */
-let DATA = { all: [], vless: [], vmess: [], ss: [] };
-let DISPLAY_LIST = []; // لیست فعلی برای نمایش (شیء: {proto, raw, host, port})
-let SHOW_LIMIT = 60; // اول چند کارت نمایش داده بشه
-const MAX_SHOW = 200;
-
-/* ====== ابزار استخراج host/port از رشته کانفیگ ====== */
-function extractHostPort(raw) {
-  raw = raw.trim();
-  // vmess://<base64>
-  if (raw.startsWith("vmess://")) {
-    try {
-      const b64 = raw.slice(8).trim();
-      const json = atob(b64.replace(/\s/g, ""));
-      const obj = JSON.parse(json);
-      if (obj.add) return { host: obj.add, port: obj.port || obj.port || (obj.ps||"") };
-    } catch(e){}
-  }
-  // vless://uuid@host:port?...  or protocol://...@host:port
-  let m = raw.match(/@([a-zA-Z0-9\.\-]+):(\d+)/);
-  if (m) return { host: m[1], port: parseInt(m[2],10) };
-  // scheme://host:port  (some formats)
-  m = raw.match(/\/\/([a-zA-Z0-9\.\-]+):(\d+)/);
-  if (m) return { host: m[1], port: parseInt(m[2],10) };
-  // shadowsocks:ss://base64  => try decode for host:port pattern
-  if (raw.startsWith("ss://")) {
-    // try to find @host:port
-    m = raw.match(/@([a-zA-Z0-9\.\-]+):(\d+)/);
-    if (m) return { host: m[1], port: parseInt(m[2],10) };
-    // try ss://base64  -> decode
-    try {
-      const b = raw.slice(5).split('#')[0];
-      const dec = atob(b);
-      const mm = dec.match(/@?([a-zA-Z0-9\.\-]+):(\d+)/);
-      if (mm) return { host: mm[1], port: parseInt(mm[2],10) };
-    } catch(e){}
-  }
-  // fallback: try finding any host:port
-  m = raw.match(/([a-zA-Z0-9\.\-]+):(\d{2,5})/);
-  if (m) return { host: m[1], port: parseInt(m[2],10) };
-  return null;
-}
-
-/* ====== پرچم‌سازی: تشخیص کد کشور از متن (heuristic) ====== */
-function detectCountryCode(raw) {
-  const s = raw.toLowerCase();
-  if (s.includes("us") || s.includes("usa") || s.includes("america")) return "us";
-  if (s.includes("de") || s.includes("germany")) return "de";
-  if (s.includes("ir") || s.includes("iran")) return "ir";
-  if (s.includes("nl") || s.includes("netherlands")) return "nl";
-  if (s.includes("fr") || s.includes("france")) return "fr";
-  if (s.includes("uk") || s.includes("gb") || s.includes("england")) return "gb";
-  if (s.includes("jp") || s.includes("japan")) return "jp";
-  if (s.includes("sg") || s.includes("singapore")) return "sg";
-  if (s.includes("ca") || s.includes("canada")) return "ca";
-  if (s.includes("tr") || s.includes("turkey")) return "tr";
-  // else unknown
-  return null;
-}
-
-/* ====== ساخت کارت HTML برای هر کانفیگ ====== */
-function makeCard(item, index) {
-  const hostPort = item.host ? `${item.host}${item.port?(':' + item.port):''}` : 'نامشخص';
-  const country = detectCountryCode(item.raw) || '';
-  const flagImg = country ? `<img class="flag" src="https://flagcdn.com/w40/${country}.png" alt="${country}">` : '';
-  const protoLabel = item.proto.toUpperCase();
-  const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(item.raw);
-
-  return `
-    <div class="card" data-index="${index}">
-      <div class="top">
-        <div class="protocol">${protoLabel}</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          ${flagImg}
-          <div class="small host">${hostPort}</div>
+    <header>
+        <div>
+            <h1>پنل کانفیگ VPN — Dark</h1>
+            <div class="info">کانفیگ‌ها از GitHub بارگذاری می‌شوند — پروتکل را انتخاب کنید، سپس پینگ‌ها را تست کنید.</div>
         </div>
-      </div>
-
-      <div class="qr-wrap" style="display:flex;justify-content:center;">
-        <img class="qr-img" src="${qrUrl}" alt="QR">
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
-        <div id="ping-${index}" class="ping small">⏳ -</div>
-        <div style="display:flex;gap:8px">
-          <button class="copy-btn" data-raw="${encodeURIComponent(item.raw)}" onclick="doCopy(event)">کپی</button>
-          <button class="btn" onclick="doPingIndex(${index})">تست</button>
+        <div class="controls">
+            <div class="filters" role="tablist" aria-label="filters">
+                <button class="btn primary" data-proto="all">همه</button>
+                <button class="btn" data-proto="vless">VLESS</button>
+                <button class="btn" data-proto="vmess">VMESS</button>
+                <button class="btn" data-proto="ss">Shadowsocks</button>
+            </div>
+            <div style="width:8px"></div>
+            <button class="btn accent" id="btn-test-all">🔎 تست همه پینگ‌ها</button>
+            <button class="btn warn" id="btn-fastest">⚡ سریع‌ترین</button>
         </div>
-      </div>
-    </div>
-  `;
-}
+    </header>
 
-/* ====== عملیات کپی ====== */
-function doCopy(ev){
-  const btn = ev.currentTarget;
-  const txt = decodeURIComponent(btn.getAttribute('data-raw'));
-  navigator.clipboard.writeText(txt).then(()=> {
-    btn.textContent = 'کپی شد';
-    setTimeout(()=> btn.textContent = 'کپی', 1200);
-  }).catch(()=> alert('کپی نشد'));
-}
+    <main>
+        <div id="grid" class="grid"></div>
+        <div style="text-align:center;margin-top:12px">
+            <button id="loadMore" class="btn">بارگذاری بیشتر</button>
+        </div>
+    </main>
 
-/* ====== پینگ یک آیتم با timeout و اندازه‌گیری زمان ====== */
-async function pingHost(host, port, timeout = 4000) {
-  if (!host) return null;
-  const controller = new AbortController();
-  const id = setTimeout(()=> controller.abort(), timeout);
-  const url = `https://${host}/`; // سعی می‌کنیم https root را HEAD کنیم
-  const start = performance.now();
-  try {
-    // mode:no-cors -> opaque response, ولی زمان اتصال را می‌توان اندازه گرفت
-    await fetch(url, { method:'GET', mode:'no-cors', signal: controller.signal });
-    const end = performance.now();
-    clearTimeout(id);
-    return Math.max(1, Math.round(end - start));
-  } catch (e) {
-    clearTimeout(id);
-    // در صورت خطا (CORS یا abort) برگردانیم null یا زمان تقریبی
-    return null;
-  }
-}
+    <footer>لینک‌های کانفیگ از مخزن ShatakVPN/ConfigForge — نمایش حداکثر 200 آیتم در هر بار</footer>
 
-/* ====== پینگ برای یک ایندکس و بروز رسانی UI ====== */
-async function doPingIndex(index) {
-  const item = DISPLAY_LIST[index];
-  if (!item) return;
-  const el = document.getElementById('ping-' + index);
-  if (!el) return;
-  el.textContent = '⏳ در حال تست...';
-  const res = await pingHost(item.host, item.port);
-  if (res === null) {
-    el.textContent = '❌ N/A';
-    el.className = 'ping red';
-  } else {
-    el.textContent = `📶 ${res} ms`;
-    el.className = res < 180 ? 'ping green' : (res < 400 ? 'ping yellow' : 'ping red');
-    DISPLAY_LIST[index].lastPing = res;
-  }
-}
+    <script>
+        const app = (() => {
+            const SOURCES = {
+                all: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/all.txt",
+                vless: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vless.txt",
+                vmess: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/vmess.txt",
+                ss: "https://raw.githubusercontent.com/ShatakVPN/ConfigForge/main/configs/shadowsocks.txt"
+            };
 
-/* ====== تست همه (با محدودیت همزمانی) ====== */
-async function testAllPings() {
-  const concurrency = 6;
-  let i = 0;
-  const queue = [];
-  const total = DISPLAY_LIST.length;
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('highlight'));
-  while (i < total) {
-    while (queue.length < concurrency && i < total) {
-      const idx = i++;
-      const promise = doPingIndex(idx).finally(()=> {
-        const pIndex = queue.indexOf(promise);
-        if (pIndex > -1) queue.splice(pIndex,1);
-      });
-      queue.push(promise);
-    }
-    await Promise.race(queue);
-  }
-  // همه انجام شد
-}
+            let DATA = {
+                all: [],
+                vless: [],
+                vmess: [],
+                ss: []
+            };
+            let DISPLAY_LIST = [];
+            let SHOW_LIMIT = 60;
+            const MAX_SHOW = 200;
 
-/* ====== نمایش سریع‌ترین ====== */
-function showFastest() {
-  let best = null;
-  for (let j=0;j<DISPLAY_LIST.length;j++){
-    const it = DISPLAY_LIST[j];
-    if (it.lastPing == null) continue;
-    if (!best || it.lastPing < best.lastPing) best = {...it, index:j};
-  }
-  if (best) {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('highlight'));
-    const el = document.querySelector(`.card[data-index="${best.index}"]`);
-    if (el) {
-      el.classList.add('highlight');
-      el.scrollIntoView({behavior:'smooth',block:'center'});
-    }
-  } else {
-    alert('هنوز پینگی ثبت نشده؛ ابتدا «تست همه پینگ‌ها» را بزنید.');
-  }
-}
+            const extractHostPort = (raw) => {
+                raw = raw.trim();
+                if (raw.startsWith("vmess://")) {
+                    try {
+                        const b64 = raw.slice(8).trim();
+                        const json = atob(b64.replace(/\s/g, ""));
+                        const obj = JSON.parse(json);
+                        if (obj.add) return {
+                            host: obj.add,
+                            port: obj.port
+                        };
+                    } catch (e) {}
+                }
+                let m = raw.match(/@([a-zA-Z0-9\.\-]+):(\d+)/);
+                if (m) return {
+                    host: m[1],
+                    port: parseInt(m[2], 10)
+                };
+                m = raw.match(/\/\/([a-zA-Z0-9\.\-]+):(\d+)/);
+                if (m) return {
+                    host: m[1],
+                    port: parseInt(m[2], 10)
+                };
+                if (raw.startsWith("ss://")) {
+                    m = raw.match(/@([a-zA-Z0-9\.\-]+):(\d+)/);
+                    if (m) return {
+                        host: m[1],
+                        port: parseInt(m[2], 10)
+                    };
+                    try {
+                        const b = raw.slice(5).split('#')[0];
+                        const dec = atob(b);
+                        const mm = dec.match(/@?([a-zA-Z0-9\.\-]+):(\d+)/);
+                        if (mm) return {
+                            host: mm[1],
+                            port: parseInt(mm[2], 10)
+                        };
+                    } catch (e) {}
+                }
+                m = raw.match(/([a-zA-Z0-9\.\-]+):(\d{2,5})/);
+                if (m) return {
+                    host: m[1],
+                    port: parseInt(m[2], 10)
+                };
+                return null;
+            };
 
-/* ====== بارگذاری و رندر اولیه ====== */
-async function loadAllSources(){
-  document.getElementById('grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted)">در حال بارگذاری کانفیگ‌ها...</div>';
-  for (const k of Object.keys(SOURCES)) {
-    try {
-      const r = await fetch(SOURCES[k]);
-      if (!r.ok) { DATA[k] = []; continue; }
-      const txt = await r.text();
-      const lines = txt.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-      DATA[k] = lines;
-    } catch(e) {
-      DATA[k] = [];
-    }
-  }
-  // برای "all" مطمئن شو که همه موارد از خود all یا جمع ترکیبی گرفته شده
-  if (!DATA.all || DATA.all.length === 0) {
-    // fallback: union of other lists
-    DATA.all = [...new Set([...(DATA.vless||[]), ...(DATA.vmess||[]), ...(DATA.ss||[])])];
-  }
-}
+            const detectCountryCode = (raw) => {
+                const s = raw.toLowerCase();
+                if (s.includes("us") || s.includes("usa") || s.includes("america")) return "us";
+                if (s.includes("de") || s.includes("germany")) return "de";
+                if (s.includes("ir") || s.includes("iran")) return "ir";
+                if (s.includes("nl") || s.includes("netherlands")) return "nl";
+                if (s.includes("fr") || s.includes("france")) return "fr";
+                if (s.includes("uk") || s.includes("gb") || s.includes("england")) return "gb";
+                if (s.includes("jp") || s.includes("japan")) return "jp";
+                if (s.includes("sg") || s.includes("singapore")) return "sg";
+                if (s.includes("ca") || s.includes("canada")) return "ca";
+                if (s.includes("tr") || s.includes("turkey")) return "tr";
+                return null;
+            };
 
-/* ====== ساخت DISPLAY_LIST بر اساس فیلتر و رندر کردن ====== */
-function buildDisplay(proto='all', limit=SHOW_LIMIT) {
-  let source = (proto==='all') ? DATA.all : DATA[proto] || [];
-  // create items with parsed host/port
-  DISPLAY_LIST = source.map(raw => {
-    const hp = extractHostPort(raw);
-    return { proto, raw, host: hp?hp.host:null, port: hp?hp.port:null, lastPing: null };
-  });
-  // limit
-  const slice = DISPLAY_LIST.slice(0, Math.min(limit, MAX_SHOW));
-  const html = slice.map((it, idx) => makeCard(it, idx)).join('');
-  document.getElementById('grid').innerHTML = html;
-  // attach event listeners for copy buttons (delegation handled inline) and per-card ping buttons - used inline onclick
-}
+            const makeCard = (item, index) => {
+                const hostPort = item.host ? `${item.host}${item.port?(':' + item.port):''}` : 'نامشخص';
+                const country = detectCountryCode(item.raw) || '';
+                const flagImg = country ? `<img class="flag" src="https://flagcdn.com/w40/${country}.png" alt="${country}">` : '';
+                const protoLabel = item.proto.toUpperCase();
+                const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(item.raw);
 
-/* ====== UI: دکمه‌ها و تعامل ====== */
-document.querySelectorAll('.filters .btn').forEach(b => {
-  b.addEventListener('click', async (e) => {
-    document.querySelectorAll('.filters .btn').forEach(x=>x.classList.remove('primary'));
-    e.currentTarget.classList.add('primary');
-    const proto = e.currentTarget.getAttribute('data-proto');
-    // map label -> key
-    const key = proto === 'all' ? 'all' : (proto === 'vless'? 'vless': (proto==='vmess'?'vmess':'ss'));
-    buildDisplay(key, SHOW_LIMIT);
-  });
-});
+                return `
+                    <div class="card" data-index="${index}">
+                        <div class="top">
+                            <div class="protocol">${protoLabel}</div>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                ${flagImg}
+                                <div class="small host">${hostPort}</div>
+                            </div>
+                        </div>
 
-document.getElementById('btn-test-all').addEventListener('click', async ()=> {
-  document.getElementById('btn-test-all').disabled = true;
-  await testAllPings();
-  document.getElementById('btn-test-all').disabled = false;
-});
+                        <div class="qr-wrap" style="display:flex;justify-content:center;">
+                            <img class="qr-img" src="${qrUrl}" alt="QR">
+                        </div>
 
-document.getElementById('btn-fastest').addEventListener('click', showFastest);
-document.getElementById('loadMore').addEventListener('click', ()=> {
-  SHOW_LIMIT = Math.min(SHOW_LIMIT + 60, MAX_SHOW);
-  // find current selected proto
-  const sel = document.querySelector('.filters .btn.primary');
-  const proto = sel ? sel.getAttribute('data-proto') : 'all';
-  const key = proto === 'all' ? 'all' : (proto === 'vless'? 'vless': (proto==='vmess'?'vmess':'ss'));
-  buildDisplay(key, SHOW_LIMIT);
-});
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+                            <div id="ping-${index}" class="ping small">⏳ -</div>
+                            <div style="display:flex;gap:8px">
+                                <button class="copy-btn" data-raw="${encodeURIComponent(item.raw)}" onclick="app.doCopy(event)">کپی</button>
+                                <button class="btn" onclick="app.doPingIndex(${index})">تست</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
 
-async function doPingIndex(index) { return window.doPingIndex ? window.doPingIndex(index) : null; } // fallback
+            const doCopy = (ev) => {
+                const btn = ev.currentTarget;
+                const txt = decodeURIComponent(btn.getAttribute('data-raw'));
+                navigator.clipboard.writeText(txt).then(() => {
+                    btn.textContent = 'کپی شد';
+                    setTimeout(() => btn.textContent = 'کپی', 1200);
+                }).catch(() => alert('کپی نشد'));
+            };
 
-/* Expose doPingIndex globally for inline onclick */
-window.doPingIndex = async function(index) {
-  const item = DISPLAY_LIST[index];
-  const el = document.getElementById('ping-' + index);
-  if (!item || !el) return;
-  el.textContent = '⏳ در حال تست...';
-  const ms = await pingHost(item.host, item.port);
-  if (ms === null) { el.textContent = '❌ N/A'; el.className = 'ping red'; }
-  else { el.textContent = `📶 ${ms} ms`; el.className = ms < 180 ? 'ping green' : (ms < 400 ? 'ping yellow' : 'ping red'); item.lastPing = ms; }
-};
+            const pingHost = async (host) => {
+                if (!host) return null;
+                const start = performance.now();
+                const wsUrl = `wss://${host}:443`;
+                return new Promise((resolve) => {
+                    const ws = new WebSocket(wsUrl);
+                    const timeout = setTimeout(() => {
+                        ws.close();
+                        resolve(null);
+                    }, 4000);
 
-/* ====== شروع جریان ====== */
-(async function init(){
-  await loadAllSources();
-  // default show all
-  document.querySelector('.filters .btn[data-proto="all"]').classList.add('primary');
-  buildDisplay('all', SHOW_LIMIT);
-})();
-</script>
+                    ws.onopen = () => {
+                        clearTimeout(timeout);
+                        ws.close();
+                        resolve(Math.round(performance.now() - start));
+                    };
+
+                    ws.onerror = () => {
+                        clearTimeout(timeout);
+                        resolve(null);
+                    };
+                });
+            };
+
+            const doPingIndex = async (index) => {
+                const item = DISPLAY_LIST[index];
+                if (!item || !item.host) return;
+                const el = document.getElementById('ping-' + index);
+                if (!el) return;
+                el.textContent = '⏳ در حال تست...';
+
+                const res = await pingHost(item.host);
+                if (res === null) {
+                    el.textContent = '❌ N/A';
+                    el.className = 'ping red';
+                } else {
+                    el.textContent = `📶 ${res} ms`;
+                    el.className = res < 180 ? 'ping green' : (res < 400 ? 'ping yellow' : 'ping red');
+                    DISPLAY_LIST[index].lastPing = res;
+                }
+            };
+
+            const testAllPings = async () => {
+                const total = DISPLAY_LIST.length;
+                document.querySelectorAll('.card').forEach(c => c.classList.remove('highlight'));
+                const promises = DISPLAY_LIST.map((item, index) =>
+                    doPingIndex(index)
+                );
+                await Promise.all(promises);
+            };
+
+            const showFastest = () => {
+                let best = null;
+                for (let j = 0; j < DISPLAY_LIST.length; j++) {
+                    const it = DISPLAY_LIST[j];
+                    if (it.lastPing == null) continue;
+                    if (!best || it.lastPing < best.lastPing) best = {
+                        ...it,
+                        index: j
+                    };
+                }
+                if (best) {
+                    document.querySelectorAll('.card').forEach(c => c.classList.remove('highlight'));
+                    const el = document.querySelector(`.card[data-index="${best.index}"]`);
+                    if (el) {
+                        el.classList.add('highlight');
+                        el.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }
+                } else {
+                    alert('هنوز پینگی ثبت نشده؛ ابتدا «تست همه پینگ‌ها» را بزنید.');
+                }
+            };
+
+            const loadAllSources = async () => {
+                document.getElementById('grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted)">در حال بارگذاری کانفیگ‌ها...</div>';
+                for (const k of Object.keys(SOURCES)) {
+                    try {
+                        const r = await fetch(SOURCES[k]);
+                        if (!r.ok) {
+                            DATA[k] = [];
+                            continue;
+                        }
+                        const txt = await r.text();
+                        const lines = txt.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+                        DATA[k] = lines;
+                    } catch (e) {
+                        DATA[k] = [];
+                    }
+                }
+                if (!DATA.all || DATA.all.length === 0) {
+                    DATA.all = [...new Set([...(DATA.vless || []), ...(DATA.vmess || []), ...(DATA.ss || [])])];
+                }
+            };
+
+            const buildDisplay = (proto = 'all', limit = SHOW_LIMIT) => {
+                let source = (proto === 'all') ? DATA.all : DATA[proto] || [];
+                DISPLAY_LIST = source.map(raw => {
+                    const hp = extractHostPort(raw);
+                    return {
+                        proto,
+                        raw,
+                        host: hp ? hp.host : null,
+                        port: hp ? hp.port : null,
+                        lastPing: null
+                    };
+                });
+                const slice = DISPLAY_LIST.slice(0, Math.min(limit, MAX_SHOW));
+                const html = slice.map((it, idx) => makeCard(it, idx)).join('');
+                document.getElementById('grid').innerHTML = html;
+            };
+
+            const initEventListeners = () => {
+                document.querySelectorAll('.filters .btn').forEach(b => {
+                    b.addEventListener('click', (e) => {
+                        document.querySelectorAll('.filters .btn').forEach(x => x.classList.remove('primary'));
+                        e.currentTarget.classList.add('primary');
+                        const proto = e.currentTarget.getAttribute('data-proto');
+                        buildDisplay(proto);
+                    });
+                });
+
+                document.getElementById('btn-test-all').addEventListener('click', async () => {
+                    const btn = document.getElementById('btn-test-all');
+                    btn.disabled = true;
+                    await testAllPings();
+                    btn.disabled = false;
+                });
+
+                document.getElementById('btn-fastest').addEventListener('click', showFastest);
+
+                document.getElementById('loadMore').addEventListener('click', () => {
+                    SHOW_LIMIT = Math.min(SHOW_LIMIT + 60, MAX_SHOW);
+                    const sel = document.querySelector('.filters .btn.primary');
+                    const proto = sel ? sel.getAttribute('data-proto') : 'all';
+                    buildDisplay(proto);
+                });
+            };
+
+            const init = async () => {
+                await loadAllSources();
+                document.querySelector('.filters .btn[data-proto="all"]').classList.add('primary');
+                buildDisplay('all', SHOW_LIMIT);
+                initEventListeners();
+            };
+
+            return {
+                init,
+                doCopy,
+                doPingIndex
+            };
+        })();
+
+        document.addEventListener('DOMContentLoaded', app.init);
+    </script>
 </body>
 </html>
